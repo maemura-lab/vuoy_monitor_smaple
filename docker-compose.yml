@@ -1,3 +1,4 @@
+version: "3.7"
 services:
     influxdb:
         image: influxdb:2.0.7
@@ -27,8 +28,12 @@ services:
         image: grafana/grafana-oss:main
         ports:
             - 3000:3000
-
-    nginx:
-        image: nginx
+    ngrok:
+        container_name: ngrok
+        image: wernight/ngrok:latest
         ports:
-            - "80:80"
+            - ${NGROK_PORT:-4040}:4040
+        environment:
+            - NGROK_AUTH=${NGROK_AUTH}
+            - NGROK_PROTOCOL=http
+            - NGROK_PORT=app:8080
